@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { Toaster } from '../components/ui/sonner';
 import { LandingPage } from '../components/LandingPage';
-import { FarmerDashboard } from '../components/FarmerDashboard';
-import { BuyerDashboard } from '../components/BuyerDashboard';
+import { FarmerDashboard } from '../components/farmer/FarmerDashboard';
+import { ProfileFarmer } from '../components/farmer/ProfileFarmer';
+import { ProfileBuyer } from '../components/buyer/ProfileBuyer';
+import { ProfileAdmin } from '../components/admin/ProfileAdmin';
+import { BuyerDashboard } from '../components/buyer/BuyerDashboard';
 import { ProductPage } from '../components/ProductPage';
 import { ChatPage } from '../components/ChatPage';
 import { PaymentPage } from '../components/PaymentPage';
 import { OrderTracking } from '../components/OrderTracking';
-import { AdminPanel } from '../components/AdminPanel';
+import { AdminPanel } from '../components/admin/AdminPanel';
 import { Analytics } from '../components/Analytics';
 import { AuthModal } from '../components/AuthModal';
+import { SettingsFarmer } from '../components/farmer/SettingsFarmer';
+import { SettingsBuyer } from '../components/buyer/SettingsBuyer';
+import { SettingsAdmin } from '../components/admin/SettingsAdmin';
 import { Navigation } from '../components/Navigation';
 
 export default function App() {
@@ -63,7 +69,33 @@ export default function App() {
   };
 
   const renderCurrentView = () => {
-    switch (currentView) {
+  switch (currentView) {
+      case 'profile':
+        if (!currentUser) {
+          setCurrentView('landing');
+          return null;
+        }
+        if (currentUser.role === 'farmer') {
+          return <ProfileFarmer user={currentUser} />;
+        } else if (currentUser.role === 'buyer') {
+          return <ProfileBuyer user={currentUser} />;
+        } else if (currentUser.role === 'admin') {
+          return <ProfileAdmin user={currentUser} />;
+        }
+        return null;
+      case 'settings':
+        if (!currentUser) {
+          setCurrentView('landing');
+          return null;
+        }
+        if (currentUser.role === 'farmer') {
+          return <SettingsFarmer user={currentUser} onSaveSettings={() => setCurrentView('farmer-dashboard')} />;
+        } else if (currentUser.role === 'buyer') {
+          return <SettingsBuyer user={currentUser} onSaveSettings={() => setCurrentView('buyer-dashboard')} />;
+        } else if (currentUser.role === 'admin') {
+          return <SettingsAdmin user={currentUser} onSaveSettings={() => setCurrentView('admin')} />;
+        }
+        return null;
       case 'landing':
         return (
           <LandingPage 

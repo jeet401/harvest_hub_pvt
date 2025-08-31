@@ -81,10 +81,19 @@ export function ProductPage({ crop, currentUser, onStartChat, onStartPayment, ad
   const totalPrice = crop.price * quantity;
   const estimatedDelivery = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
+  const goToDashboard = () => {
+    if (currentUser?.role === 'farmer') {
+      window.location.href = '/farmer-dashboard';
+    } else if (currentUser?.role === 'buyer') {
+      window.location.href = '/buyer-dashboard';
+    } else {
+      window.location.href = '/';
+    }
+  };
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Back Button */}
-      <Button variant="ghost" className="mb-6" onClick={() => window.history.back()}>
+      <Button variant="ghost" className="mb-6" onClick={goToDashboard}>
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Dashboard
       </Button>
@@ -255,7 +264,7 @@ export function ProductPage({ crop, currentUser, onStartChat, onStartPayment, ad
 
               <div className="flex gap-2">
                 <Button
-                  className="flex-1 bg-harvest-gradient"
+                  className="flex-1 bg-black text-white font-semibold"
                   onClick={handleOrder}
                   disabled={!currentUser}
                 >
@@ -263,7 +272,7 @@ export function ProductPage({ crop, currentUser, onStartChat, onStartPayment, ad
                   Order Now
                 </Button>
                 <Button
-                  variant="outline"
+                  className="flex-1 bg-blue-600 text-white font-semibold"
                   onClick={handleChat}
                   disabled={!currentUser}
                 >
