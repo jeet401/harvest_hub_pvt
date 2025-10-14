@@ -1,3 +1,4 @@
+// Test comment to check Git configuration
 import { Routes, Route, Link } from 'react-router-dom'
 import { LanguageProvider } from './contexts/LanguageContext.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
